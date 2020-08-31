@@ -1,0 +1,17 @@
+{
+    "reg-cod" : {
+        "id": "001",
+        "description": "regular cod",
+        "price": 7
+    },
+    "small-cod" : {
+        "id": "002",
+        "description": "small cod",
+        "price": 5.70
+    },
+    "scampi" : {
+        "id": "003",
+        "description": "scampi",
+        "price": 6.50    
+    }
+}
