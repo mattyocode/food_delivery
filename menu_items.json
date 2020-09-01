@@ -1,17 +1,22 @@
 {
     "reg-cod" : {
         "id": "001",
-        "description": "regular cod",
-        "price": 7
+        "description": "Regular Cod",
+        "price": 7.00
     },
     "small-cod" : {
         "id": "002",
-        "description": "small cod",
+        "description": "Small Cod",
         "price": 5.70
     },
     "scampi" : {
         "id": "003",
-        "description": "scampi",
+        "description": "Scampi",
         "price": 6.50    
+    },
+    "mushy-peas" : {
+        "id": "004",
+        "description": "Mushy Peas",
+        "price": 2.50
     }
 }

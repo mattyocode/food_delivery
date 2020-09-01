@@ -16,13 +16,17 @@ class Menu:
         return self.__items
 
     def print_menu(self):
-        if self.__items != '':
-            return self.__items["reg-cod"]
-        else:
+        if self.__items == {}:
             return "No menu set"
+        else:
+            return self.neat_print()
 
     def neat_print(self):
-        
+        menu_table = []
+        for item in self.__items.values():
+            menu_table.append(item['id'] + ' - ' + item['description'] + ' - £' + format(item['price'], '.2f'))
+        return menu_table
 
-    def print_id(self):
-        pass
+    def clear(self):
+        self.__name = None
+        self.__items= {}
