@@ -1,11 +1,11 @@
 import pytest
-import restaurant
+from src.restaurant import Menu
 
 f = 'menu_items.json'
 
 @pytest.fixture
 def subject():
-    subject = restaurant.Menu(name="Chips")
+    subject = Menu(name="Chips")
     yield subject
     subject.clear()
 
