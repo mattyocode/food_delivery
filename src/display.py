@@ -22,3 +22,6 @@ class Display:
         item_list = rest_menu.print_menu()
         for i in item_list:
             print(i)
+
+    def make_choice(self):
+        answer = str(input("Please enter number of food you\'d like to order:  "))

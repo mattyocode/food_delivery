@@ -6,7 +6,7 @@ setup(
     name='food_delivery',
     version='0.1.0',
     license='proprietary',
-    description='takeaway',
+    description='takeaway ordering service',
 
     author='Matt Oliver',
 

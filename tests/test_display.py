@@ -4,11 +4,12 @@ import builtins
 from unittest.mock import Mock
 
 from src.display import Display
-from src.restaurant import Menu
+from src.restaurant import Restaurant, Menu
 
 f = 'menu_items.json'
 subject = Display()
-stub_menu = Mock(Menu("Chip"))
+r = Restaurant("Chipps")
+stub_menu = Mock(Menu(r))
 
 def test_no_returns_message(monkeypatch):
     with mock.patch.object(builtins, 'input', lambda _: 'n'):
@@ -27,8 +28,9 @@ def test_returns_menu(capsys):
     stub_menu.print_menu.return_value = ['001 - Regular Cod - £7.00', '002 - Small Cod - £5.70', '003 - Scampi - £6.50']
     subject.show_menu(stub_menu)
     captured = capsys.readouterr()
-    print(captured.out)
     assert captured.out == '***************MENU***************\n001 - Regular Cod - £7.00\n002 - Small Cod - £5.70\n003 - Scampi - £6.50\n'
 
-# def test_ask_for_choice():
-#     assert subject.make_choice() == ''
+def test_ask_for_choice(capsys):
+    subject.make_choice()
+    captured = capsys.readouterr()
+    assert captured.out == 'Please enter number of food you\'d like to order:  '

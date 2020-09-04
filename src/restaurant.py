@@ -1,13 +1,27 @@
 import config
 import json
 
-class Menu:
+class Restaurant:
 
     def __init__(self, name):
         self.__name = name
-        self.__items= {}
 
-    def get_menu(self):
+    def get_name(self):
+        return self.__name
+    
+    def set_name(self, new_name):
+        self.__name = new_name
+
+class Menu:
+
+    def __init__(self, restaurant):
+        self.__restaurant = restaurant
+        self.__items= None
+
+    def which_restaurant(self):
+        return self.__restaurant.get_name()
+
+    def get_menu_items(self):
         return self.__items
 
     def set_menu(self, file):
@@ -16,8 +30,8 @@ class Menu:
         return self.__items
 
     def print_menu(self):
-        if self.__items == {}:
-            return "No menu set"
+        if self.__items == None:
+            return "No menu added yet"
         else:
             return self.neat_print()
 
