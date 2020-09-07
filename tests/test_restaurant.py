@@ -18,20 +18,18 @@ def test_restaurant_returns_name(subject):
 def test_menu_returns_name(subject):
     assert subject.which_restaurant() == subject._restaurant.get_name()
 
-def test_menu_returns_dictionary(subject):
+def test_menu_as_dict_returns_items_attribute(subject):
     menu_items = subject.set_menu(f)
     assert menu_items == subject._items
 
-@pytest.mark.skip(reason="Need to move test to display")
 def test_get_first_menu_item(subject):
     subject.set_menu(f)
-    assert subject.print_menu()[0] == '001 - Regular Cod - £7.00'
+    assert subject.items_as_list()[0] == '001 - Regular Cod - £7.00\n'
 
-@pytest.mark.skip(reason="Need to move test to display")
-def test_neat_print_first_three_items(subject):
+def test_menu_list_third_item(subject):
     subject.set_menu(f)
-    assert subject.neat_print()[:3] == ['001 - Regular Cod - £7.00', '002 - Small Cod - £5.70', '003 - Scampi - £6.50']
+    assert subject.items_as_list()[2] == '003 - Scampi - £6.50\n'
 
-@pytest.mark.skip(reason="Need to move test to display")
-def test_print_with_no_menu_set(subject):
-    assert subject.print_menu() == "No menu added yet"
+def test_list_with_no_menu_set_raises_error(subject):
+    with pytest.raises(TypeError, match="No menu added yet"):
+        subject.items_as_list()
