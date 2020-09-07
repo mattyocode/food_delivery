@@ -11,15 +11,16 @@ def subject():
     subject.clear()
 
 def test_restaurant_returns_name(subject):
-    r = Restaurant("Chips")
+    name = "Chips"
+    r = Restaurant(name)
     assert r.get_name() == "Chips"
 
 def test_menu_returns_name(subject):
-    assert subject.which_restaurant() == "Chipppz"
+    assert subject.which_restaurant() == subject._restaurant.get_name()
 
 def test_menu_returns_dictionary(subject):
-    subject.set_menu(f)
-    assert subject.get_menu_items()["mushy-peas"] == {'description': 'Mushy Peas', 'id': '004', 'price': 2.5}
+    menu_items = subject.set_menu(f)
+    assert menu_items == subject._items
 
 @pytest.mark.skip(reason="Need to move test to display")
 def test_get_first_menu_item(subject):
