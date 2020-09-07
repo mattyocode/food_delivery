@@ -10,7 +10,7 @@ def subject():
     yield subject
     subject.clear()
 
-def test_restaurant_returns_name():
+def test_restaurant_returns_name(subject):
     r = Restaurant("Chips")
     assert r.get_name() == "Chips"
 

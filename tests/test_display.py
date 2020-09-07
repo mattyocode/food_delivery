@@ -24,13 +24,13 @@ def test_yes_returns_menu(monkeypatch):
 #         captured = capsys.readouterr()
 #         assert captured.out == "Didn't understand. Please try again!\n"
 
-def test_returns_menu(capsys):
-    stub_menu.print_menu.return_value = ['001 - Regular Cod - £7.00', '002 - Small Cod - £5.70', '003 - Scampi - £6.50']
-    subject.show_menu(stub_menu)
-    captured = capsys.readouterr()
-    assert captured.out == '***************MENU***************\n001 - Regular Cod - £7.00\n002 - Small Cod - £5.70\n003 - Scampi - £6.50\n'
+# def test_returns_menu(capsys):
+#     stub_menu.print_menu.return_value = ['001 - Regular Cod - £7.00', '002 - Small Cod - £5.70', '003 - Scampi - £6.50']
+#     subject.show_menu(stub_menu)
+#     captured = capsys.readouterr()
+#     assert captured.out == '***************MENU***************\n001 - Regular Cod - £7.00\n002 - Small Cod - £5.70\n003 - Scampi - £6.50\n'
 
-def test_ask_for_choice(capsys):
-    subject.make_choice()
-    captured = capsys.readouterr()
-    assert captured.out == 'Please enter number of food you\'d like to order:  '
+# def test_ask_for_choice(capsys):
+#     subject.make_choice()
+#     out, err = capsys.readouterr()
+#     assert out == 'Please enter number of food you\'d like to order:  '
