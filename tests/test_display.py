@@ -3,8 +3,8 @@ import mock
 import builtins
 from unittest.mock import Mock
 
-from src import Display
-from src import Restaurant, Menu
+from src.display import Display
+from src.restaurant import Restaurant, Menu
 
 f = 'menu_items.json'
 subject = Display()
