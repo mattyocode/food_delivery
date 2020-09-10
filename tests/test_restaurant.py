@@ -1,5 +1,5 @@
 import pytest
-from src.restaurant import Restaurant, Menu
+from src import Restaurant, Menu
 
 f = 'menu_items.json'
 
