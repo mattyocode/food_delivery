@@ -2,8 +2,7 @@ import pytest
 from pathlib import Path
 from src.restaurant import Restaurant, Menu
 
-data_folder = Path("../src/data/")
-f = data_folder / "menu_items.json"
+f = "menu_items.json"
 
 @pytest.fixture
 def subject():

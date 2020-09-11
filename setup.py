@@ -10,9 +10,9 @@ setup(
 
     author='Matt Oliver',
 
-    packages=find_packages(where='src'),
-    package_dir={'': 'src'},
-
+    packages=find_packages(),
+    package_data={'data': ['*.json']},
+    
     # install_requires=['click==7.1.2', 'tinydb==3.15.1', 'six'],
     # extras_require={'mongo': 'pymongo'},
 

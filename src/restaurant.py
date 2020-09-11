@@ -1,5 +1,5 @@
-import config
-import json
+import os, json
+from pathlib import Path
 
 class Restaurant:
 
@@ -14,19 +14,20 @@ class Restaurant:
 
 class Menu:
 
-    def __init__(self, restaurant):
+    def __init__(self, restaurant=None, file=None):
         self._restaurant = restaurant
-        self._items= None
+        self._items = self.set_menu(file) if file != None else None
 
     def which_restaurant(self):
         return self._restaurant.get_name()
 
-    def menu_as_dict(self):
+    def set_menu(self, file):
+        f = os.path.join('src/data', file)
+        with open(f) as json_file:
+            self._items = json.load(json_file)
         return self._items
 
-    def set_menu(self, file):
-        with open(file) as json_file:
-            self._items = json.load(json_file)
+    def menu_as_dict(self):
         return self._items
 
     def items_as_list(self):
