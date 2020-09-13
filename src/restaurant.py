@@ -51,17 +51,20 @@ class Basket:
     def __init__(self, menu=None):
         self._menu = menu
         self._order = {}
-        self._total = 0
+        self._total_cost = 0
 
-    def add(self, item_id):
-        self._order[f"{item_id}"] = 1
+    def add(self, item_id, quantity=1):
+        self._order[f"{item_id}"] = quantity
         return self._order[f"{item_id}"]
 
-    def increase_total(self, item_id):
+    def increase_total(self, item_id, quantity=1):
         for val in self._menu.menu_as_dict().values():
             if val["id"] == item_id:
-                self._total += val["price"]
-        return self._total
+                self._total_cost += (val["price"] * quantity)
+        return self._total_cost 
+
+    def get_total(self):
+        return self._total_cost
 
 
 

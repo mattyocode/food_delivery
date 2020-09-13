@@ -41,15 +41,50 @@ def test_list_with_no_menu_set_raises_error(subject):
 
 #Tests for Basket class
 
-def test_add(subject):
+def test_add_1_item(subject):
     b = Basket(subject)
     assert b.add('001') == 1
+    assert b._order == {'001': 1}
+
+def test_add_2_of_same_item(subject):
+    b = Basket(subject)
+    assert b.add('001', 2) == 2
+    assert b._order == {'001': 2}
+
+def test_add_2_different_items(subject):
+    subject.set_menu(f)
+    b = Basket(subject)
+    b.add('001')
+    b.add('002')
+    assert b._order == {'001': 1, '002': 1}
+
+def test_add_2_items_different_quanitity(subject):
+    subject.set_menu(f)
+    b = Basket(subject)
+    b.add('001')
+    b.add('002', 2)
+    assert b._order == {'001': 1, '002': 2}
 
 def test_total_cost_updated(subject):
     subject.set_menu(f)
     b = Basket(subject)
     assert b.increase_total('001') == 7.0
 
+def test_total_cost_updated_2x_item(subject):
+    subject.set_menu(f)
+    b = Basket(subject)
+    assert b.increase_total('001', 2) == 14.0
+
+def test_total_cost_updated_2x_item_diff_quantities(subject):
+    subject.set_menu(f)
+    b = Basket(subject)
+    b.increase_total('001', 1)
+    b.increase_total('002', 2)
+    expected_total = 18.4
+    assert expected_total == b._total_cost
+
 def test_get_total(subject):
-    pass
+    subject.set_menu(f)
+    b = Basket(subject)
+    assert b.get_total() == 0
 
