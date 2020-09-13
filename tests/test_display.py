@@ -61,5 +61,4 @@ def test_item_added_to_basket():
     expected = 1
     subject.set_menu(stub_menu)
     assert subject.add_to_basket(item) == expected
-
     

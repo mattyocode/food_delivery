@@ -1,6 +1,6 @@
 import pytest
 from pathlib import Path
-from src.restaurant import Restaurant, Menu
+from src.restaurant import Restaurant, Menu, Basket
 
 f = "menu_items.json"
 
@@ -11,10 +11,14 @@ def subject():
     yield subject
     subject.clear()
 
-def test_restaurant_returns_name(subject):
+#Tests for Restaurant class
+    
+def test_restaurant_returns_name():
     name = "Chips"
     r = Restaurant(name)
     assert r.get_name() == "Chips"
+
+#Tests for Menu class
 
 def test_menu_returns_name(subject):
     assert subject.which_restaurant() == subject._restaurant.get_name()
@@ -34,3 +38,18 @@ def test_menu_list_third_item(subject):
 def test_list_with_no_menu_set_raises_error(subject):
     with pytest.raises(TypeError, match="No menu added yet"):
         subject.items_as_list()
+
+#Tests for Basket class
+
+def test_add(subject):
+    b = Basket(subject)
+    assert b.add('001') == 1
+
+def test_total_cost_updated(subject):
+    subject.set_menu(f)
+    b = Basket(subject)
+    assert b.increase_total('001') == 7.0
+
+def test_get_total(subject):
+    pass
+
