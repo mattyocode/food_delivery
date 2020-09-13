@@ -57,25 +57,13 @@ def test_choose_one_item(display_sub, monkeypatch, capsys):
         out = out.split('\n')
         assert out[0] == 'You have added 1 x Regular Cod - £7.00'
 
-@pytest.mark.skip("v1 choose one item test")
-def test_choose_one_item_old(display_sub, monkeypatch, capsys):
-    with mock.patch.object(builtins, 'input', lambda _: '001'):
-        display_sub.menu.menu_as_dict.return_value = { "reg-cod" : {
-        "id": "001",
-        "description": "Regular Cod",
-        "price": 7.00 }}
-        display_sub.make_choice()
-        out, err = capsys.readouterr()
-        out = out.split('\n')
-        assert out[0] == 'You have added 1 x Regular Cod - £7.00\n'
-
 @pytest.mark.skip
 def test_choose_one_item_x2(display_sub, monkeypatch, capsys):
-    with mock.patch.object(builtins, 'input', lambda _: '001 x2'):
-        display_sub.menu.menu_as_dict.return_value = { "reg-cod" : {
+    display_sub.menu.menu_as_dict.return_value = { "reg-cod" : {
         "id": "001",
         "description": "Regular Cod",
         "price": 7.00 }}
+    with mock.patch('builtins.input', side_effect=['001 x2', 'done']):
         display_sub.make_choice()
         out, err = capsys.readouterr()
         assert out == 'You have added 2 x Regular Cod - £14.00\n'
