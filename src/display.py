@@ -16,7 +16,7 @@ class Display:
                 print("No problem! Please come back later")
                 break
             elif answer == "y":
-                print("Great! Here's our menu: ")
+                print("Great! Here's our menu:")
                 self.show_menu()
                 break
             else:
@@ -29,25 +29,54 @@ class Display:
             item_lst = self.menu.items_as_list()
             for i in item_lst:
                 print(i)
-
+        self.make_choice()        
+                
     def make_choice(self):
-        answer = str(input("Please enter number of food you\'d like to order:  "))
-        for k, v in self.menu.menu_as_dict().items():
-            if answer == v['id']:
-                self.add_to_basket(v["id"])
-                print('You have added 1 x {} - £{:.2f}'.format(v['description'], v['price'])) 
+        answer = str(input("Please enter number of the first item you\'d like to order:  "))
+        while answer != 'done':
+            if self.has_quant(answer):
+                id_num, quant = self.get_quant(answer)
             else:
-                print('Not found')
+                id_num, quant = answer.strip(), 1
+            for k, v in self.menu.menu_as_dict().items():
+                if id_num == v['id']:
+                    self.add_to_basket(v["id"], quant)
+                    print('You have added {} x {} - £{:.2f}'.format(quant, v['description'], (v['price'] * quant) )) 
+            answer = str(input("Please enter your next item, or enter done to finish: "))
 
-    def add_to_basket(self, item):
+        # answer = str(input("Please enter number of food you\'d like to order:  "))
+        # if self.has_quant(answer):
+        #     id_num, quant = self.get_quant(answer)
+        # else:
+        #     id_num, quant = answer.strip(), 1
+        # for k, v in self.menu.menu_as_dict().items():
+        #     if id_num == v['id']:
+        #         self.add_to_basket(v["id"], quant)
+        #         print('You have added {} x {} - £{:.2f}'.format(quant, v['description'], (v['price'] * quant) )) 
+        #     else:
+        #         print('Not found')
+
+    def has_quant(self, answer):
+        if 'x' in answer:
+            return True
+
+    def get_quant(self, answer):
+        id_num, quant = answer.split("x")
+        id_num, quant = id_num.strip(), int(quant.strip())
+        return id_num, quant
+
+    def add_to_basket(self, item, quant=1):
         if self.basket == None:
             self.basket = Basket(self.menu)
-        return self.basket.add(item)
+        return self.basket.add(item, quant)
         
+    def clear(self):
+        self.menu = None
+        self.basket = None
 
 
 
-# if __name__ == "__main__":
-#     menu = Menu(file='menu_items.json')
-#     d = Display(menu)
-#     d.greeting()
+if __name__ == "__main__":
+    menu = Menu(file='menu_items.json')
+    d = Display(menu)
+    d.greeting()

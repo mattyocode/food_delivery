@@ -10,55 +10,75 @@ from src.restaurant import Restaurant, Menu
 # data_folder = Path("/data")
 # f = data_folder / "menu_items.json"
 
-f = 'menu_items.json'
-subject = Display()
-r = Restaurant("Chipps")
-stub_menu = Mock(Menu(r, f))
+@pytest.fixture
+def display_sub():
+    stub_menu = Mock(Menu)
+    display_sub = Display(stub_menu)
+    yield display_sub
+    display_sub.clear()
 
-def test_no_returns_message(monkeypatch, capsys):
+def test_no_returns_message(display_sub, monkeypatch, capsys):
     with mock.patch.object(builtins, 'input', lambda _: 'n'):
-        subject.greeting()
+        display_sub.greeting()
         out, err = capsys.readouterr()
         assert out == "No problem! Please come back later\n"
 
-def test_yes_returns_menu(monkeypatch, capsys):
+def test_yes_returns_menu(display_sub, monkeypatch, capsys):
     with mock.patch.object(builtins, 'input', lambda _: 'y'):
-        subject.greeting()
+        display_sub.menu.items_as_list.return_value = ['001 - Regular Cod - £7.00']
+        display_sub.greeting()
         out, err = capsys.readouterr()
-        assert out == "Great! Here's our menu: \n"
+        out = out.split('\n')
+        assert out[0] == "Great! Here's our menu:"
 
 @pytest.mark.skip
-def test_neither_returns_try_again(monkeypatch, capsys):
+def test_neither_returns_try_again(display_sub, monkeypatch, capsys):
     with mock.patch.object(builtins, 'input', lambda _: 'blah'):
-        subject.greeting()
+        display_sub.greeting()
         out, err = capsys.readouterr()
         assert out == "Input not y or n. Please try again!"
 
-def test_returns_menu(capsys):
-    stub_menu.items_as_list.return_value = ['001 - Regular Cod - £7.00']
-    subject.set_menu(stub_menu)
-    subject.show_menu()
+def test_returns_menu(display_sub, capsys):
+    display_sub.menu.items_as_list.return_value = ['001 - Regular Cod - £7.00']
+    display_sub.show_menu()
     captured = capsys.readouterr()
     assert captured.out == '***************MENU***************\n001 - Regular Cod - £7.00\n'
 
-def test_choose_one_item(monkeypatch, capsys):
+def test_choose_one_item(display_sub, monkeypatch, capsys):
     with mock.patch.object(builtins, 'input', lambda _: '001'):
-        stub_menu.menu_as_dict.return_value = { "reg-cod" : {
+        display_sub.menu.menu_as_dict.return_value = { "reg-cod" : {
         "id": "001",
         "description": "Regular Cod",
         "price": 7.00 }}
-        subject.set_menu(stub_menu)
-        subject.make_choice()
+        display_sub.make_choice()
         out, err = capsys.readouterr()
-        assert out == 'You have added 1 x Regular Cod - £7.00\n'
+        out = out.split('\n')
+        assert out[0] == 'You have added 1 x Regular Cod - £7.00\n'
 
-def test_item_added_to_basket():
+def test_choose_one_item_x2(display_sub, monkeypatch, capsys):
+    with mock.patch.object(builtins, 'input', lambda _: '001 x2'):
+        display_sub.menu.menu_as_dict.return_value = { "reg-cod" : {
+        "id": "001",
+        "description": "Regular Cod",
+        "price": 7.00 }}
+        display_sub.make_choice()
+        out, err = capsys.readouterr()
+        assert out == 'You have added 2 x Regular Cod - £14.00\n'
+
+def test_item_added_to_basket(display_sub):
     item = { 
     "reg-cod" : 
     {"id": "001",
     "description": "Regular Cod",
     "price": 7.00 }}
     expected = 1
-    subject.set_menu(stub_menu)
-    assert subject.add_to_basket(item) == expected
+    assert display_sub.add_to_basket(item) == expected
+
+def test_answer_contains_quantity(display_sub):
+    answer = "001 x2"
+    assert display_sub.has_quant(answer) == True
+
+def test_split_answer_into_item_and_quant(display_sub):
+    answer = "001 x2"
+    assert display_sub.get_quant(answer) == ("001", 2)
     
