@@ -52,18 +52,14 @@ def test_choose_one_item(monkeypatch, capsys):
         out, err = capsys.readouterr()
         assert out == 'You have added 1 x Regular Cod - £7.00\n'
 
-@pytest.mark.skip
 def test_item_added_to_basket():
-    stub_menu.menu_as_dict.return_value = { 
+    item = { 
     "reg-cod" : 
     {"id": "001",
     "description": "Regular Cod",
     "price": 7.00 }}
-    expected = {
-    "id": "001",
-    "description": "Regular Cod",
-    "price": 7.00 }
+    expected = 1
     subject.set_menu(stub_menu)
-    assert subject.basket.add() == expected
+    assert subject.add_to_basket(item) == expected
 
     
