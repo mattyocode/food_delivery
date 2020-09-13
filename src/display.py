@@ -1,9 +1,10 @@
-from src.restaurant import Restaurant, Menu
+from src.restaurant import Restaurant, Menu, Basket
 
 class Display:
 
     def __init__(self, menu=None):
         self.menu = menu
+        self.basket = None
 
     def set_menu(self, menu):
         self.menu = menu
@@ -31,13 +32,22 @@ class Display:
 
     def make_choice(self):
         answer = str(input("Please enter number of food you\'d like to order:  "))
-        for item in self.menu.menu_as_dict().values():
-            if answer == item['id']:
-                print('You have added 1 x {} - £{:.2f}'.format(item['description'], item['price']))
+        for k, v in self.menu.menu_as_dict().items():
+            if answer == v['id']:
+                self.add_to_basket(v["id"])
+                print('You have added 1 x {} - £{:.2f}'.format(v['description'], v['price'])) 
             else:
                 print('Not found')
 
-if __name__ == "__main__":
-    menu = Menu(file='../src/data/menu_items.json')
-    d = Display(menu)
-    d.greeting()
+    def add_to_basket(self, item):
+        if self.basket == None:
+            self.basket = Basket(self.menu)
+        return self.basket.add(item)
+        
+
+
+
+# if __name__ == "__main__":
+#     menu = Menu(file='menu_items.json')
+#     d = Display(menu)
+#     d.greeting()
