@@ -9,6 +9,15 @@ class Display:
     def set_menu(self, menu):
         self.menu = menu
 
+    def set_basket(self, basket=None):
+        if self.basket == None and basket != None:
+            self.basket = basket
+        elif self.basket != None and basket == None:
+            print("You alreedy have a basket!")
+        else:
+            self.basket = Basket(self.menu)
+
+
     def greeting(self):
         while True:
             answer = str(input("Hello, would you like to see a menu? y/n:> ")).lower()
@@ -56,8 +65,20 @@ class Display:
 
     def add_to_basket(self, item, quant=1):
         if self.basket == None:
-            self.basket = Basket(self.menu)
+            self.set_basket() 
         return self.basket.add(item, quant)
+
+    def get_order_total(self):
+        sub_total = 0
+        print("You ordered items:")
+        for k, v in self.basket.get_order().items():
+            for val in self.menu.menu_as_dict().values():
+                if k == val["id"]:
+                    item_total = (v * val["price"])
+                    sub_total += item_total
+                    print("{} x {} - £{:.2f}".format(v, val["description"], item_total))
+        print("Total: £{:.2f}".format(sub_total))
+                    
         
     def clear(self):
         self.menu = None
