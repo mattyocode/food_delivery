@@ -88,3 +88,9 @@ def test_get_total(subject):
     b = Basket(subject)
     assert b.get_total() == 0
 
+def test_add_item_already_in_basket(subject):
+    b = Basket(subject)
+    b.add('001', 2)
+    b.add('001', 1)
+    assert b._order == {'001': 3}   
+

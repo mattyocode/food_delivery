@@ -22,7 +22,7 @@ def test_no_returns_message(display_sub, monkeypatch, capsys):
     with mock.patch.object(builtins, 'input', lambda _: 'n'):
         display_sub.greeting()
         out, err = capsys.readouterr()
-        assert out == "No problem! Please come back later\n"
+        assert out == "No problem! Please come back later\n\n"
 
 def test_yes_returns_menu(display_sub, monkeypatch, capsys):
     with mock.patch.object(builtins, 'input', lambda _: 'y'):
@@ -30,7 +30,7 @@ def test_yes_returns_menu(display_sub, monkeypatch, capsys):
         display_sub.greeting()
         out, err = capsys.readouterr()
         out = out.split('\n')
-        assert out[0] == "Great! Here's our menu:"
+        assert out[1] == "Great! Here's our menu:"
 
 @pytest.mark.skip
 def test_neither_returns_try_again(display_sub, monkeypatch, capsys):
@@ -44,7 +44,7 @@ def test_returns_menu(display_sub, capsys):
     display_sub.show_menu()
     out, err = capsys.readouterr()
     out = out.split('\n')
-    assert out[0] == '***************MENU***************'
+    assert out[1] == '***************MENU***************'
 
 def test_choose_one_item(display_sub, monkeypatch, capsys):
     display_sub.menu.menu_as_dict.return_value = { "reg-cod" : {
