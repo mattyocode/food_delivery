@@ -54,7 +54,11 @@ class Basket:
         self._total_cost = 0
 
     def add(self, item_id, quant=1):
-        self._order[f"{item_id}"] = quant
+        if str(item_id) in self._order.keys():
+            current_val = self._order[f"{item_id}"]
+            self._order[f"{item_id}"] = current_val + quant
+        else:
+            self._order[f"{item_id}"] = quant
         return self._order[f"{item_id}"]
 
     def increase_total(self, item_id, quant=1):

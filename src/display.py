@@ -22,9 +22,10 @@ class Display:
         while True:
             answer = str(input("Hello, would you like to see a menu? y/n:> ")).lower()
             if answer == "n":
-                print("No problem! Please come back later")
+                print("No problem! Please come back later\n")
                 break
             elif answer == "y":
+                print('')
                 print("Great! Here's our menu:")
                 self.show_menu()
                 break
@@ -34,11 +35,13 @@ class Display:
 
     def show_menu(self):
         if self.menu != None:
+            print('')
             print('*' * 15 + 'MENU' + '*' * 15)
+            print('')
             item_lst = self.menu.items_as_list()
             for i in item_lst:
                 print(i)
-#        self.make_choice()        
+        self.make_choice()        
                 
     def make_choice(self):
         answer = str(input("Please enter number of the first item you\'d like to order:  "))
@@ -52,7 +55,8 @@ class Display:
                     self.add_to_basket(v["id"], quant)
                     print('You have added {} x {} - £{:.2f}'.format(quant, v['description'], (v['price'] * quant) )) 
             answer = str(input("Please enter your next item, or enter done to finish: "))
-        return self.basket._order
+#        return self.get_order_total()
+        
 
     def has_quant(self, answer):
         if 'x' in answer:
