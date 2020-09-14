@@ -66,6 +66,9 @@ class Basket:
     def get_total(self):
         return self._total_cost
 
+    def get_order(self):
+        return self._order
+
 
 
 
