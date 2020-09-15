@@ -69,11 +69,10 @@ def test_choose_one_item_x2(display_sub, monkeypatch, capsys):
         assert out[0] == 'You have added 2 x Regular Cod - £14.00'
 
 def test_item_added_to_basket(display_sub):
-    item = { 
-    "reg-cod" : 
-    {"id": "001",
-    "description": "Regular Cod",
-    "price": 7.00 }}
+    item = { "reg-cod" : 
+        {"id": "001",
+        "description": "Regular Cod",
+        "price": 7.00 }}
     expected = 1
     assert display_sub.add_to_basket(item) == expected
 

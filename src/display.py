@@ -87,8 +87,6 @@ class Display:
         self.menu = None
         self.basket = None
 
-
-
 if __name__ == "__main__":
     menu = Menu(file='menu_items.json')
     d = Display(menu)
