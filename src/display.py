@@ -41,7 +41,7 @@ class Display:
             item_lst = self.menu.items_as_list()
             for i in item_lst:
                 print(i)
-        self.make_choice()        
+        # self.make_choice()        
                 
     def make_choice(self):
         answer = str(input("Please enter number of the first item you\'d like to order:  "))
@@ -55,7 +55,7 @@ class Display:
                     self.add_to_basket(v["id"], quant)
                     print('You have added {} x {} - £{:.2f}'.format(quant, v['description'], (v['price'] * quant) )) 
             answer = str(input("Please enter your next item, or enter done to finish: "))
-#        return self.get_order_total()
+        return self.get_order_total()
         
 
     def has_quant(self, answer):
@@ -82,8 +82,7 @@ class Display:
                     sub_total += item_total
                     print("{} x {} - £{:.2f}".format(v, val["description"], item_total))
         print("Total: £{:.2f}".format(sub_total))
-                    
-        
+
     def clear(self):
         self.menu = None
         self.basket = None

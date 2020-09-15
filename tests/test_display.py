@@ -65,7 +65,8 @@ def test_choose_one_item_x2(display_sub, monkeypatch, capsys):
     with mock.patch('builtins.input', side_effect=['001 x2', 'done']):
         display_sub.make_choice()
         out, err = capsys.readouterr()
-        assert out == 'You have added 2 x Regular Cod - £14.00\n'
+        out = out.split('\n')
+        assert out[0] == 'You have added 2 x Regular Cod - £14.00'
 
 def test_item_added_to_basket(display_sub):
     item = { 
