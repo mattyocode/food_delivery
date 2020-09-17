@@ -1,11 +1,13 @@
-from src.restaurant import Restaurant, Menu, Basket
+import datetime
 
+from src.restaurant import Restaurant, Menu, Basket
 
 class Display:
 
     def __init__(self, menu=None):
         self.menu = menu
         self.basket = None
+        self.api = None
 
     def set_menu(self, menu):
         self.menu = menu
@@ -17,6 +19,10 @@ class Display:
             print("You alreedy have a basket!")
         else:
             self.basket = Basket(self.menu)
+
+    def set_api(self, api):
+        self.api = api
+        return self.api
 
     def greeting(self):
         while True:
@@ -55,8 +61,7 @@ class Display:
                     self.add_to_basket(v["id"], quant)
                     print('You have added {} x {} - £{:.2f}'.format(quant, v['description'], (v['price'] * quant) )) 
             answer = str(input("Please enter your next item, or enter done to finish: "))
-        return self.get_order_total()
-        
+        return self.get_order_total()        
 
     def has_quant(self, answer):
         if 'x' in answer:
@@ -93,6 +98,13 @@ class Display:
             if ans == 'n':
                 print("No problem!")
                 self.make_choice()
+    
+    def message_for_text(self):
+        now = datetime.datetime.now()
+        print(now)
+        now_plus_30 = now + datetime.timedelta(minutes = 30)
+        time = now_plus_30.strftime("%H:%M")
+        return f'Your order will arrive before {time}'
 
     def clear(self):
         self.menu = None

@@ -2,14 +2,14 @@ import pytest
 import mock
 import builtins
 import unittest
+import datetime
 from unittest.mock import Mock, patch
 from pathlib import Path
+from freezegun import freeze_time
 
 from src.display import Display
 from src.restaurant import Restaurant, Menu, Basket
-
-# data_folder = Path("/data")
-# f = data_folder / "menu_items.json"
+from src.api import TextApi
 
 @pytest.fixture
 def display_sub():
@@ -110,8 +110,11 @@ def test_order_complete_no(display_sub, monkeypatch, capsys):
             display_sub.order_complete()
             assert copy_make_choice.called
 
-# def test_add_text_api(display_sub):
-#     display_sub.set_api
+def test_add_text_api(display_sub):
+    stub_api = Mock(TextApi)
+    display_sub.set_api(stub_api)
+    assert display_sub.api == stub_api
 
-# def test_send_text(display_sub):
-#     display_sub.
+@freeze_time("2020-09-17 19:45:01")
+def test_message_for_text(display_sub):
+    assert display_sub.message_for_text() == 'Your order will arrive before 20:15'
