@@ -95,3 +95,15 @@ def test_get_order_total(display_sub, monkeypatch, capsys):
     display_sub.get_order_total()
     out, err = capsys.readouterr()
     assert out == 'You ordered items:\n2 x Regular Cod - £14.00\nTotal: £14.00\n'
+
+def test_order_complete_yes(display_sub, monkeypatch, capsys):
+    with mock.patch.object(builtins, 'input', lambda _: 'y'):
+        display_sub.order_complete()
+        out, err = capsys.readouterr()
+        assert out == "Your order is on its way\n"
+
+def test_order_complete_no(display_sub, monkeypatch, capsys):
+    with mock.patch.object(builtins, 'input', lambda _: 'n'):
+        display_sub.order_complete()
+        out, err = capsys.readouterr()
+        assert out == "No problem!\n"

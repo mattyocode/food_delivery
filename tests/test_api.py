@@ -6,7 +6,7 @@ from src.api import send_message
 from src.config import account_sid, auth_token, user_phone, twilio_phone
 
 @pytest.mark.skip("Makes actual call to Twilio API")
-def test_send_message_():
+def test_send_message():
     message = "Your order will arrive by 9pm"
     to = user_phone
     from_ = twilio_phone

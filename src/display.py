@@ -17,7 +17,6 @@ class Display:
         else:
             self.basket = Basket(self.menu)
 
-
     def greeting(self):
         while True:
             answer = str(input("Hello, would you like to see a menu? y/n:> ")).lower()
@@ -44,7 +43,7 @@ class Display:
         # self.make_choice()        
                 
     def make_choice(self):
-        answer = str(input("Please enter number of the first item you\'d like to order:  "))
+        answer = str(input("Please enter number of the item you\'d like to order:  "))
         while answer != 'done':
             if self.has_quant(answer):
                 id_num, quant = self.get_quant(answer)
@@ -83,9 +82,21 @@ class Display:
                     print("{} x {} - £{:.2f}".format(v, val["description"], item_total))
         print("Total: £{:.2f}".format(sub_total))
 
+    def order_complete(self):
+        ans = ""
+        while ans not in ('y', 'n'):
+            ans = input("Order complete? y/n: ")
+            if ans == 'y':
+                print("Your order is on its way")
+                break
+            if ans == 'n':
+                print("No problem!")
+                # self.make_choice()
+
     def clear(self):
         self.menu = None
         self.basket = None
+
 
 if __name__ == "__main__":
     menu = Menu(file='menu_items.json')
