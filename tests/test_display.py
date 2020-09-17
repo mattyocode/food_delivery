@@ -1,10 +1,8 @@
 import pytest
 import mock
 import builtins
-import unittest
 import datetime
 from unittest.mock import Mock, patch
-from pathlib import Path
 from freezegun import freeze_time
 
 from src.display import Display
@@ -99,9 +97,11 @@ def test_get_order_total(display_sub, monkeypatch, capsys):
 
 def test_order_complete_yes(display_sub, monkeypatch, capsys):
     with mock.patch.object(builtins, 'input', lambda _: 'y'):
-        display_sub.order_complete()
-        out, err = capsys.readouterr()
-        assert out == "Your order is on its way\n"
+        with mock.patch('src.display.Display.send_message') as copy_send_message:
+            display_sub.order_complete()
+            out, err = capsys.readouterr()
+            assert out == "Your order is on its way\n"
+            assert copy_send_message.called
 
 
 def test_order_complete_no(display_sub, monkeypatch, capsys):
@@ -118,3 +118,10 @@ def test_add_text_api(display_sub):
 @freeze_time("2020-09-17 19:45:01")
 def test_message_for_text(display_sub):
     assert display_sub.message_for_text() == 'Your order will arrive before 20:15'
+
+def test_send_message_to_api(display_sub):
+    stub_api = Mock(TextApi)
+    display_sub.set_api(stub_api)
+    with mock.patch('src.display.Display.message_for_text') as copy_mft:
+        copy_mft.return_value = 'Your order will arrive before 20:15'
+        assert display_sub.send_message() == 'Message sent'

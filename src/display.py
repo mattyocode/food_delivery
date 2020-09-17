@@ -94,17 +94,21 @@ class Display:
             ans = input("Order complete? y/n: ")
             if ans == 'y':
                 print("Your order is on its way")
-                break
+                self.send_message()
             if ans == 'n':
                 print("No problem!")
                 self.make_choice()
     
     def message_for_text(self):
         now = datetime.datetime.now()
-        print(now)
         now_plus_30 = now + datetime.timedelta(minutes = 30)
         time = now_plus_30.strftime("%H:%M")
         return f'Your order will arrive before {time}'
+
+    def send_message(self):
+        message = self.message_for_text()
+        self.api.send_message(message=message)
+        return 'Message sent'
 
     def clear(self):
         self.menu = None
