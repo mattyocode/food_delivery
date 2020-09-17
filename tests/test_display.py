@@ -51,10 +51,12 @@ def test_choose_one_item(display_sub, monkeypatch, capsys):
         "description": "Regular Cod",
         "price": 7.00 }}
     with mock.patch('builtins.input', side_effect=['001', 'done']):
-        display_sub.make_choice()
-        out, err = capsys.readouterr()
-        out = out.split('\n')
-        assert out[0] == 'You have added 1 x Regular Cod - £7.00'
+        with mock.patch('src.display.Display.order_complete') as copy_order_comp:
+            display_sub.make_choice()
+            out, err = capsys.readouterr()
+            out = out.split('\n')
+            assert out[0] == 'You have added 1 x Regular Cod - £7.00'
+            assert copy_order_comp.called
 
 def test_choose_one_item_x2(display_sub, monkeypatch, capsys):
     display_sub.menu.menu_as_dict.return_value = { "reg-cod" : {
@@ -62,10 +64,12 @@ def test_choose_one_item_x2(display_sub, monkeypatch, capsys):
         "description": "Regular Cod",
         "price": 7.00 }}
     with mock.patch('builtins.input', side_effect=['001 x2', 'done']):
-        display_sub.make_choice()
-        out, err = capsys.readouterr()
-        out = out.split('\n')
-        assert out[0] == 'You have added 2 x Regular Cod - £14.00'
+        with mock.patch('src.display.Display.order_complete') as copy_order_comp:
+            display_sub.make_choice()
+            out, err = capsys.readouterr()
+            out = out.split('\n')
+            assert out[0] == 'You have added 2 x Regular Cod - £14.00'
+            assert copy_order_comp.called
 
 def test_item_added_to_basket(display_sub):
     item = { "reg-cod" : 
@@ -91,9 +95,11 @@ def test_get_order_total(display_sub, monkeypatch, capsys):
     stub_basket = Mock(Basket)
     stub_basket.get_order.return_value = {'001': 2}
     display_sub.set_basket(stub_basket)
-    display_sub.get_order_total()
-    out, err = capsys.readouterr()
-    assert out == 'You ordered items:\n2 x Regular Cod - £14.00\nTotal: £14.00\n'
+    with mock.patch('src.display.Display.order_complete') as copy_order_comp:
+        display_sub.get_order_total()
+        out, err = capsys.readouterr()
+        assert out == 'You ordered items:\n2 x Regular Cod - £14.00\nTotal: £14.00\n'
+        assert copy_order_comp.called
 
 def test_order_complete_yes(display_sub, monkeypatch, capsys):
     with mock.patch.object(builtins, 'input', lambda _: 'y'):
@@ -102,7 +108,6 @@ def test_order_complete_yes(display_sub, monkeypatch, capsys):
             out, err = capsys.readouterr()
             assert out == "Your order is on its way\n"
             assert copy_send_message.called
-
 
 def test_order_complete_no(display_sub, monkeypatch, capsys):
     with mock.patch.object(builtins, 'input', lambda _: 'n'):

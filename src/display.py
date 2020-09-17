@@ -1,13 +1,14 @@
 import datetime
 
 from src.restaurant import Restaurant, Menu, Basket
+from src.api import TextApi
 
 class Display:
 
     def __init__(self, menu=None):
         self.menu = menu
         self.basket = None
-        self.api = None
+        self.api = TextApi()
 
     def set_menu(self, menu):
         self.menu = menu
@@ -87,6 +88,7 @@ class Display:
                     sub_total += item_total
                     print("{} x {} - £{:.2f}".format(v, val["description"], item_total))
         print("Total: £{:.2f}".format(sub_total))
+        self.order_complete()
 
     def order_complete(self):
         ans = ""
