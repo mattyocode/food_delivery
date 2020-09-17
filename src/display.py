@@ -1,5 +1,6 @@
 from src.restaurant import Restaurant, Menu, Basket
 
+
 class Display:
 
     def __init__(self, menu=None):
@@ -40,7 +41,7 @@ class Display:
             item_lst = self.menu.items_as_list()
             for i in item_lst:
                 print(i)
-        # self.make_choice()        
+        self.make_choice()        
                 
     def make_choice(self):
         answer = str(input("Please enter number of the item you\'d like to order:  "))
@@ -91,7 +92,7 @@ class Display:
                 break
             if ans == 'n':
                 print("No problem!")
-                # self.make_choice()
+                self.make_choice()
 
     def clear(self):
         self.menu = None

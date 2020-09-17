@@ -25,14 +25,13 @@ def test_no_returns_message(display_sub, monkeypatch, capsys):
         assert out == "No problem! Please come back later\n\n"
 
 def test_yes_returns_menu(display_sub, monkeypatch, capsys):
+    display_sub.menu.items_as_list.return_value = ['001 - Regular Cod - £7.00']
     with mock.patch.object(builtins, 'input', lambda _: 'y'):
-        display_sub.menu.items_as_list.return_value = ['001 - Regular Cod - £7.00']
-        display_sub.greeting()
-        out, err = capsys.readouterr()
-        out = out.split('\n')
-        assert out[1] == "Great! Here's our menu:"
+        with mock.patch('src.display.Display.show_menu') as copy_show_menu:
+            display_sub.greeting()
+            assert copy_show_menu.called
 
-@pytest.mark.skip
+@pytest.mark.skip("Getting stuck in while loop")
 def test_neither_returns_try_again(display_sub, monkeypatch, capsys):
     with mock.patch.object(builtins, 'input', lambda _: 'blah'):
         display_sub.greeting()
@@ -41,10 +40,12 @@ def test_neither_returns_try_again(display_sub, monkeypatch, capsys):
 
 def test_returns_menu(display_sub, capsys):
     display_sub.menu.items_as_list.return_value = ['001 - Regular Cod - £7.00']
-    display_sub.show_menu()
-    out, err = capsys.readouterr()
-    out = out.split('\n')
-    assert out[1] == '***************MENU***************'
+    with mock.patch('src.display.Display.make_choice') as copy_make_choice:
+        display_sub.show_menu()
+        out, err = capsys.readouterr()
+        out = out.split('\n')
+        assert out[1] == '***************MENU***************'
+        assert copy_make_choice.called
 
 def test_choose_one_item(display_sub, monkeypatch, capsys):
     display_sub.menu.menu_as_dict.return_value = { "reg-cod" : {
@@ -102,8 +103,15 @@ def test_order_complete_yes(display_sub, monkeypatch, capsys):
         out, err = capsys.readouterr()
         assert out == "Your order is on its way\n"
 
+
 def test_order_complete_no(display_sub, monkeypatch, capsys):
     with mock.patch.object(builtins, 'input', lambda _: 'n'):
-        display_sub.order_complete()
-        out, err = capsys.readouterr()
-        assert out == "No problem!\n"
+        with mock.patch('src.display.Display.make_choice') as copy_make_choice:
+            display_sub.order_complete()
+            assert copy_make_choice.called
+
+# def test_add_text_api(display_sub):
+#     display_sub.set_api
+
+# def test_send_text(display_sub):
+#     display_sub.
