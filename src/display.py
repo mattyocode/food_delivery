@@ -17,7 +17,7 @@ class Display:
         if self.basket == None and basket != None:
             self.basket = basket
         elif self.basket != None and basket == None:
-            print("You alreedy have a basket!")
+            print("You already have a basket!")
         else:
             self.basket = Basket(self.menu)
 
@@ -32,23 +32,18 @@ class Display:
                 print("No problem! Please come back later\n")
                 break
             elif answer == "y":
-                print('')
-                print("Great! Here's our menu:")
-                self.show_menu()
-                break
+                print("\nGreat! Here's our menu:")
+                return self.show_menu()
             else:
                 print("Input not y or n. Please try again!")
-                continue
 
     def show_menu(self):
         if self.menu != None:
-            print('')
-            print('*' * 15 + 'MENU' + '*' * 15)
-            print('')
-            item_lst = self.menu.items_as_list()
-            for i in item_lst:
+            print('\n' + '*' * 15 + 'MENU' + '*' * 15 + '\n')
+            item_list = self.menu.items_as_list()
+            for i in item_list:
                 print(i)
-        self.make_choice()        
+        return self.make_choice()        
                 
     def make_choice(self):
         answer = str(input("Please enter number of the item you\'d like to order:  "))
@@ -96,10 +91,10 @@ class Display:
             ans = input("Order complete? y/n: ")
             if ans == 'y':
                 print("Your order is on its way")
-                self.send_message()
+                return self.send_message()
             if ans == 'n':
                 print("No problem!")
-                self.make_choice()
+                return self.make_choice()
     
     def message_for_text(self):
         now = datetime.datetime.now()
@@ -115,8 +110,7 @@ class Display:
     def clear(self):
         self.menu = None
         self.basket = None
-
-
+        
 if __name__ == "__main__":
     menu = Menu(file='menu_items.json')
     d = Display(menu)
