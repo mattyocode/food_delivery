@@ -22,7 +22,7 @@ class Menu:
         return self._restaurant.get_name()
 
     def set_menu(self, file):
-        f = os.path.join('../src/data', file)
+        f = os.path.join('src/data', file)
         with open(f) as json_file:
             self._items = json.load(json_file)
         return self._items
