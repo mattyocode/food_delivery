@@ -29,7 +29,7 @@ def test_no_returns_message(display_sub, monkeypatch, capsys):
         assert out == "No problem! Please come back later\n\n"
 
 def test_yes_returns_menu(display_sub, monkeypatch, capsys):
-    display_sub.menu.items_as_list.return_value = test_menu_item_list
+    display_sub._menu.items_as_list.return_value = test_menu_item_list
     with mock.patch.object(builtins, 'input', lambda _: 'y'):
         with mock.patch('src.display.Display.show_menu') as copy_show_menu:
             display_sub.greeting()
@@ -43,7 +43,7 @@ def test_neither_returns_try_again(display_sub, monkeypatch, capsys):
         assert out == "Input not y or n. Please try again!"
 
 def test_returns_menu(display_sub, capsys):
-    display_sub.menu.items_as_list.return_value = test_menu_item_list
+    display_sub._menu.items_as_list.return_value = test_menu_item_list
     with mock.patch('src.display.Display.make_choice') as copy_make_choice:
         display_sub.show_menu()
         out, err = capsys.readouterr()
@@ -52,7 +52,7 @@ def test_returns_menu(display_sub, capsys):
         assert copy_make_choice.called
 
 def test_choose_one_item(display_sub, monkeypatch, capsys):
-    display_sub.menu.menu_as_dict.return_value = test_menu_item_dict
+    display_sub._menu.menu_as_dict.return_value = test_menu_item_dict
     with mock.patch('builtins.input', side_effect=['001', 'done']):
         with mock.patch('src.display.Display.order_complete') as copy_order_comp:
             display_sub.make_choice()
@@ -62,7 +62,7 @@ def test_choose_one_item(display_sub, monkeypatch, capsys):
             assert copy_order_comp.called
 
 def test_choose_one_item_x2(display_sub, monkeypatch, capsys):
-    display_sub.menu.menu_as_dict.return_value = test_menu_item_dict
+    display_sub._menu.menu_as_dict.return_value = test_menu_item_dict
     with mock.patch('builtins.input', side_effect=['001 x2', 'done']):
         with mock.patch('src.display.Display.order_complete') as copy_order_comp:
             display_sub.make_choice()
@@ -84,7 +84,7 @@ def test_split_answer_into_item_and_quant(display_sub):
     assert display_sub.get_quant(answer) == ("001", 2)
 
 def test_get_order_total(display_sub, monkeypatch, capsys):
-    display_sub.menu.menu_as_dict.return_value = test_menu_item_dict
+    display_sub._menu.menu_as_dict.return_value = test_menu_item_dict
     stub_basket = Mock(Basket)
     stub_basket.get_order.return_value = {'001': 2}
     display_sub.set_basket(stub_basket)
@@ -111,7 +111,7 @@ def test_order_complete_no(display_sub, monkeypatch, capsys):
 def test_add_text_api(display_sub):
     stub_api = Mock(TextApi)
     display_sub.set_api(stub_api)
-    assert display_sub.api == stub_api
+    assert display_sub._api == stub_api
 
 @freeze_time("2020-09-17 19:45:01")
 def test_message_for_text(display_sub):

@@ -6,24 +6,24 @@ from src.api import TextApi
 class Display:
 
     def __init__(self, menu=None):
-        self.menu = menu
-        self.basket = None
-        self.api = TextApi()
+        self._menu = menu
+        self._basket = None
+        self._api = TextApi()
 
     def set_menu(self, menu):
-        self.menu = menu
+        self._menu = menu
 
     def set_basket(self, basket=None):
-        if self.basket == None and basket != None:
-            self.basket = basket
-        elif self.basket != None and basket == None:
+        if self._basket == None and basket != None:
+            self._basket = basket
+        elif self._basket != None and basket == None:
             print("You already have a basket!")
         else:
-            self.basket = Basket(self.menu)
+            self._basket = Basket(self._menu)
 
     def set_api(self, api):
-        self.api = api
-        return self.api
+        self._api = api
+        return self._api
 
     def greeting(self):
         while True:
@@ -38,9 +38,9 @@ class Display:
                 print("Input not y or n. Please try again!")
 
     def show_menu(self):
-        if self.menu != None:
+        if self._menu != None:
             print('\n' + '*' * 15 + 'MENU' + '*' * 15 + '\n')
-            item_list = self.menu.items_as_list()
+            item_list = self._menu.items_as_list()
             for i in item_list:
                 print(i)
         return self.make_choice()        
@@ -52,7 +52,7 @@ class Display:
                 id_num, quant = self.get_quant(answer)
             else:
                 id_num, quant = answer.strip(), 1
-            for k, v in self.menu.menu_as_dict().items():
+            for k, v in self._menu.menu_as_dict().items():
                 if id_num == v['id']:
                     self.add_to_basket(v["id"], quant)
                     print('You have added {} x {} - £{:.2f}'.format(quant, v['description'], (v['price'] * quant) )) 
@@ -69,15 +69,15 @@ class Display:
         return id_num, quant
 
     def add_to_basket(self, item, quant=1):
-        if self.basket == None:
+        if self._basket == None:
             self.set_basket() 
-        return self.basket.add(item, quant)
+        return self._basket.add(item, quant)
 
     def get_order_total(self):
         sub_total = 0
         print("You ordered items:")
-        for k, v in self.basket.get_order().items():
-            for val in self.menu.menu_as_dict().values():
+        for k, v in self._basket.get_order().items():
+            for val in self._menu.menu_as_dict().values():
                 if k == val["id"]:
                     item_total = (v * val["price"])
                     sub_total += item_total
@@ -104,12 +104,12 @@ class Display:
 
     def send_message(self):
         message = self.message_for_text()
-        self.api.send_message(message=message)
+        self._api.send_message(message=message)
         return 'Message sent'
 
     def clear(self):
-        self.menu = None
-        self.basket = None
+        self._menu = None
+        self._basket = None
         
 if __name__ == "__main__":
     menu = Menu(file='menu_items.json')
